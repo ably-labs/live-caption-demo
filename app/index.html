@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Live Caption</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/browser/assets/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/browser/assets/favicon-16x16.png">
+        <link rel="manifest" href="/browser/assets/site.webmanifest">
+        <script src="/index.js" type="module"></script>
+    </head>
+    <body>
+        <h1 class="header">Live Caption Yourself</h1>
+        <main>
+            <section class="controls">
+                <button class="button" id="button">Start listening</button>
+                <label for="color">LED colour:</label>
+                <input type="color" id="color" class="color" value="#ffffff">
+                <label for="color">Scroll speed:</label>
+                <input type="range" max="-5" min="-250" value="-25" class="speed" id="speed"> 
+            </section>
+            <section class="response-holder">
+                <h2>Your speech as text will show here</h2>
+                <div id="response" class="response"></div>
+            </section>
+            <div id="lightGrid" class="light-grid"></div>
+            <section class="info-holder">
+                <h3>What is this?</h3>
+                <p>This web app uses <a href="https://azure.microsoft.com/en-gb/services/cognitive-services/speech-to-text/">Microsoft Azure Cognitive Services</a> to convert speech into text which can be streamed using <a href="https://ably.com">Ably Realtime</a> to another device. It can also stream to IoT LED matrix displays, which could be placed in wearables such as a mask or glasses to display live captions as the wearer speaks.
+                </p>
+                <p>It uses the browser's <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia">getUserMedia()</a> API to prompt the speaker for permission to use their microphone and stream audio.</p>
+                <h3>How do I use it?</h3>
+                <p>Click the "start listening" button and allow your browser permission to use your microphone. Speak into the mic and the text of what you say will be displayed both as plain text and as a scrolling graphic on the LED display simulator.</p>
+            </section>
+        </main>
+        <footer>
+            <span class="powered">Powered by</span> <a href="https://ably.com" class="ably">Ably</a> + <a class="mcs" href="https://azure.microsoft.com/en-gb/services/cognitive-services/speech-to-text/">Microsoft Azure Cognitive Services</a>
+        </footer>
+    </body>
+</html>

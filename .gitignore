@@ -1,0 +1,5 @@
+dist
+node_modules
+debug.log
+web_modules
+.vscode/settings.json

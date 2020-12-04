@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Live Caption</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/browser/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/browser/assets/favicon-16x16.png">
+    <link rel="manifest" href="/browser/assets/site.webmanifest">
+    <!--script src="/microsoft.cognitiveservices.speech.sdk.bundle.js"></script-->
+    <script src="/view.js" type="module"></script>
+</head>
+
+<body>
+    <h1 class="header">Live Caption Yourself</h1>
+    <main>
+        <section class="response-holder">
+            <h2>Text Preview</h2>
+            <div id="response" class="response"></div>
+        </section>
+        <footer>
+            Powered by <a href="https://ably.com">Ably</a> and <a
+                href="https://azure.microsoft.com/en-gb/services/cognitive-services/speech-to-text/">Microsoft Azure
+                Cognitive Services</a>
+        </footer>
+    </main>
+</body>
+
+</html>

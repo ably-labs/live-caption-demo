@@ -1,0 +1,25 @@
+{
+  "name": "livecaptioning-espruino",
+  "version": "1.0.0",
+  "description": "Hardware code",
+  "main": "app.js",
+  "repository": {
+    "url": "https://github.com/stasberkov/espruino-ts-quickstart"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stanislav Berkov",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/espruino": "^1.94.3",
+    "espruino": "^0.1.32",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "js-yaml": "^3.14.0",
+    "lodash": "^4.17.20",
+    "rollup": "^2.28.2",
+    "typescript": "^4.0.3"
+  }
+}

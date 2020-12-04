@@ -1,0 +1,3 @@
+port: COM5
+port_speed: 115200
+board: ESP32
