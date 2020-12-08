@@ -1,92 +1,66 @@
-# Live Caption
+# Live Captioning with Ably Realtime and Microsoft Azure Cognitive Services.
 
 A live captioning app that translates your speech to a wearable display. Perfect for wearing masks!
 
 URL: https://icy-pond-03bcaa503.azurestaticapps.net/
 
-# What is this
+# What is this?
 
-This application is a webapp, that uses Azure Cognitive Service (ACS), designed to be run from your mobile phone, while you're wearing a wearable display.
+This is a web app that uses Azure Cognitive Service (ACS) and Ably. It is designed to be run in a browser on your mobile phone while you're wearing mask with a flexible LED display. It uses ACS to perform streaming transcription of your microphone input (ideally from a lapel or headset mic, but will also work with the phone held within a sensible distance), while using the app in a browser. The data returned from ACS is then sent to the display on the mask via Ably. The transcription is also displayed in the browser.
 
-It uses ACS to perform streaming transcription of your microphone input - ideally from a lapel or headset mic, connected to your mobile device, while using the app in a browser / PWA.
+The web app communicates with a physical hardware device to scroll text on an LED display in the real world. It uses an NPM package called `@snakemode/matrix-driver` that was built as part of this project. `matrix-driver` exposes a JavaScript SDK called `RemoteMatrixLedDriver`, which is used to send either text, images or individual pixels displays running on Arduino hardware.
 
-The transcription is then displayed on a virtual LED matrix inside the browser, as well as being output as text.
-
-The WebApp can communicate with a physical hardware device (more on this later) to actually scroll an LED display in the real world. We're using an NPM package called `@snakemode/matrix-driver` that was built as part of this project.
-`matrix-driver` exposes a JavaScript SDK called `RemoteMatrixLedDriver`, which we use to send images, pixels and text to displays running on Arduino hardware.
-
-This webapp also uses a Virtual LED Matrix that comes as part of the `matrix-driver` - it's a debug utility to help us write our Arduino code, but as a fun side effect, we can run our Arduino code (or some approximation of it!) in the web browser, and replicate what you would see on real hardware. On the actual hardware, this code is translated to C, but it's still fun to use on the web.
+This web app also displays a simulated LED Matrix that comes as part of the `matrix-driver` - it is a debug utility to help us write the Arduino code without being hooked up to a display, but as a fun side effect, it makes it possible to run a close approximation to the Arduino code in the web browser, and replicate what you would see on real hardware. On the actual hardware, this code is translated to C, in the web version we're writing in Typescript.
 
 The `matrix-driver` uses Ably and MQTT to send its messages to the hardware, so while this webapp works as "just" a demo of Voice-to-text using Azure Cognitive Services, when combined with Ably and MQTT, we can trivially drive actual hardware devices.
 
-# How do I run it
+# How To Run the App Locally
 
-Without worrying too much about hardware, you can run the web app in this repository to try out Speech recognition/live captioning and lighting up an in-browser LED matrix by:
+You can run the web app in this repository locally to try out speech recognition/live captioning and the in-browser LED matrix. To run the web app:
 
-1. Clone this repository
-2. Run npm install in the repository root and API sub-directory
-3. Create the file `/api/local.settings.json` and put an `Ably API key` into it (more on this later, if you don't know what that means!)
+1. Clone this repository.
+2. In your terminal run `npm install` in the repository root.
+3. Create a file called **/api/local.settings.json**.
+4. Paste the following into ***local.settings.json**:
 
-```js
-{
-  "IsEncrypted": false,
-  "Values": {
-    "ABLY_API_KEY": "ably-api-key-goes-here",
-    "FUNCTIONS_WORKER_RUNTIME": "node"
-  }
-  "ConnectionStrings": {}
-}
-```
+    ```js
+    {
+    "IsEncrypted": false,
+    "Values": {
+        "ABLY_API_KEY": "ably-api-key-goes-here",
+        "FUNCTIONS_WORKER_RUNTIME": "node"
+    }
+    "ConnectionStrings": {}
+    }
+    ```
 
-4. npm run start in the repository root
+5. In your terminal, run `npm run start` in the repository root
+6. Enjoy speech to text, and some pretty lights!
 
-```bash
-npm install
-npm run start
-```
+# How it works
 
-5. Enjoy speech to text, and some pretty lights!
+This readme will walk through:
 
-# How it all works
-
-We're going to:
-
-- Build a static web application
-- Add an API to integrate with Ably token authentication
-- Add an API to integrate with Azure Cognitive Services Token Authentication
-- Write code to transcribe microphone input
-- Write code to display a Virtual LED Matrix display on the screen
-- Use the `matrix-driver` to send messages using Ably and MQTT to power physical devices
+- Building the static web application
+- Adding an API to integrate with Ably token authentication
+- Adding an API to integrate with Azure Cognitive Services Token Authentication
+- Writing code to transcribe microphone input
+- Writing code to display a Virtual LED Matrix display on the screen
+- Using the `matrix-driver` to send messages using Ably and MQTT to power physical devices
 
 # Dependencies
 
-- An Ably API key
+- An Ably account and API key
 - An Azure Account for hosting on production
 - Node 12 (LTS)
 
-For the hardware portion of this demo - but don't panic - you don't need hardware at first!
+To write the code for the hardware portion of this demo (don't panic - you don't need hardware at first):
 
 - Arduino IDE - 1.8.42
-- MQTT by Joel Gaehwiler - 2.4.8
-- Adafruit NeoPixel - 1.7.0
+- MQTT by Joel Gaehwiler - 2.4.8 (installable from the Library Manager in the Arduino IDE)
+- Adafruit NeoPixel - 1.7.0 (installable from the Library Manager in the Arduino IDE)
 
-The MQTT library, and the NeoPixel library are both installable from the Library Manager in the Arduino IDE.
-
-Additionally, from Tools -> Boards -> Board Manager, ensure you're running 
-
-- Arduino AVR Boards - 1.8.3
-- ESP8266 Community - 2.7.4
-- ESP32 - 1.0.4
-
-
-# Configuring Ably
-
-We're going to need to configure our system for local development, and to do that we need to
-
-- Install the azure-functions-core-tools
-- Add our Ably API key to a configuration file
-- Configure a function to provide the Ably SDK with `token authentication` credentials
-
+# Configuration
 ## Ably Channels for pub/sub
 
 The app uses [Ably](https://www.ably.io/) for [pub/sub messaging](https://www.ably.io/documentation/core-features/pubsub) between the players. Ably is an enterprise-ready pub/sub messaging platform that makes it easy to design, ship, and scale critical realtime functionality directly to your end-users.
@@ -106,34 +80,33 @@ This app is going to use [Ably Channels](https://www.ably.io/channels) and [Toke
 
 ## Local dev pre-requirements
 
-We'll use Azure functions for hosting our API, so you'll need the Azure functions core tools.
+You will need to host the API, and can do so using Azure functions, you will need to install the [Azure functions core tools](https://github.com/Azure/azure-functions-core-tools). In your terminal, run:
 
 ```bash
 npm install -g azure-functions-core-tools
 ```
 
-You'll also need to set your API key for local dev:
+You will also need to set your API key for local development. In your terminal, run:
 
 ```bash
 cd api
 func settings add ABLY_API_KEY Your-Ably-Api-Key
 ```
+
 Running this command will encrypt your API key into the file `/api/local.settings.json`.
 You don't need to check it in to source control, and even if you do, it won't be usable on another machine.
 
 ## How authentication with Ably works
 
-Azure static web apps don't run traditional "server side code", but if you include a directory with some Azure functions in your application, Azures deployment engine will automatically create and manage Azure functions for you, that you can call from your static application.
+Azure static web apps don't run traditional "server side code", but if you include a directory with some Azure functions in your application, Azure's deployment engine will automatically create and manage Azure functions for you, that you can call from your static application.
 
-For local development, we'll just use the Azure functions SDK to replicate this, but for production, we can use static files (or files created by a static site generator of your choice) and Azure will serve them for us.
+For local development, you can use the Azure functions SDK to replicate this. For production, use static files (or files created by a static site generator of your choice) and Azure will serve them for you.
 
-## In the Azure function
+## The Azure function
 
-We have a folder called API which contains an Azure functions JavaScript API. There's a bunch of files created by default (package.json, host.json etc) that you don't really need to worry about, and are created by the Functions SDK. If you wanted to expand the API, you would use npm install and the package.json file to manage dependencies for any additional functions.
+The `/API` folder in this repo contains an Azure functions JavaScript API. It contains some files created by default (package.json, host.json etc) that you don't really need to worry about, they are generated by the Azure Functions SDK. If you wanted to expand the API, you would use npm install and the package.json file to manage dependencies for any additional functionality.
 
-There's a directory `api/createTokenRequest` - this is where all our "server side" code lives.
-
-Inside it, there are two files - `index.js` and `function.json`. The function.json file is the Functions binding code that the Azure portal uses for configuration, it's generated by the SDK and you don't need to pay attention to it. Our Ably code is inside the `index.js` file.
+The `api/createTokenRequest` directory is where all of the "server side" code lives. Inside it, there are two files - `index.js` and `function.json`. The function.json file is the Functions binding code that the Azure portal uses for configuration, it is generated by the SDK and you don't really need to pay attention to it. The Ably setup is inside the `index.js` file:
 
 ```js
 const Ably = require('ably/promises');
@@ -148,56 +121,47 @@ module.exports = async function (context, req) {
 };
 ```
 
-By default, configures this API to be available on `https://azure-url/api/createTokenRequest`
-We're going to provide this URL to the Ably SDK in our client to authenticate with Ably.
+This code configures this API to be available on `https://azure-url/api/createTokenRequest`. Later on we're going to provide this URL to the Ably SDK in the client to authenticate with Ably.
 
-## How authentication with Azure Cognitive Services Works
+## Authentication with Azure Cognitive Services
 
-To use Azure Cognitive Services (ACS), we're going to need to
+To use Azure Cognitive Services (ACS), you will need to:
 
 - Create an instance of Azure Cognitive Services
-- Get our ACS API key
+- Get an ACS API key
 - Create an Azure Functions API to do Token Exchange
 
 ## Getting an Azure Cognitive Services Instance up and running and finding your API keys
 
 If you'd rather read the official Microsoft Docs for this, go here - https://azure.microsoft.com/en-gb/services/cognitive-services/
 
-Firstly, you need an Azure Account
-Then login
+Firstly, you need an Azure Account, if you don't have one, you can [set one up for free](https://azure.microsoft.com/account/free). Once you have an account:
 
-Search for "Cognitive Services" in the Azure portal search bar.
-Click "Add"
-At the marketplace search for "Speech"
+1. Login to your acount and navigate to the **Portal**.
+2. Search for "Cognitive Services" in the Azure portal search bar.
+3. Click "Add", this will land you in the Marketplace.
+4. At the marketplace, search for "Speech"
+5. See "Speech" by Microsoft
+6. Click "Create" -> "Speech"
+7. Give your resources a name, and you can select the F0 free pricing tier, to try this out for free
+8. Click "Create".
 
-See "Speech" by Microsoft
-Click "Create" -> "Speech"
-
-Give your resources a name, and you can select the F0 free pricing tier, to try this out.
-Click "Create".
-
-Once you've created a Cognitive Services instance, you'll need to get your API keys.
 Once your Cognitive Services instance has been created, you should be able to navigate to it by looking at your Cognitive Services Accounts - https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.CognitiveServices%2Faccounts
 
-Once you click your running Cognitive Servives instance, you can click "Manage keys".
-From here, click "Show Keys" and copy one of the two keys (it, hilariously, doesn't really matter which, there's just two of them) - and this is your Cognitive Services API key.
+Click your running Cognitive Servives instance, and click "Manage keys" to get your API key. From here, click "Show Keys" and copy one of the two keys (it, hilariously, doesn't really matter which, there's just two of them) - and this is your Cognitive Services API key.
 
 # Creating an Azure Function for Cognitive Services Token Authentication
 
-https://dev.cognitive.microsoft.com/docs/services/57346a70b4769d2694911369/operations/57346edcb5816c23e4bf7421
+While you **can** just put your API key into the web app, API keys are like passwords - you don't want people copy and pasting them from your source code. If your API key is stolen, especially one that's valid for your Azure account, other people could run up huge resource bills on your behalf.
 
-While you can just put your API key into the web app, API keys are like passwords and you don't want people copy and pasting them from your source code. If your API key is stolen, especially one that's valid for your Azure account, other people could run up huge resource bills on your behalf.
-
-To protect against this, Azure Cognitive Services offers an `issueToken` API, that generates time-limited tokens. We can use this by calling this API with our normal API, and subsequently return the token it returns to our client-side code.
-These tokens expire very quickly (minutes-to-hours) and we can make our own API to return these tokens to our web app, so we can allow our users to connect directly to our ACS instances with a token we issue them.
+To protect against this, Azure Cognitive Services offers an [`issueToken` API](https://dev.cognitive.microsoft.com/docs/services/57346a70b4769d2694911369/operations/57346edcb5816c23e4bf7421), that generates time-limited tokens. We can use this by calling the IssueToken API with our API, and subsequently return the token it returns to our client-side code.
+These tokens expire very quickly (minutes-to-hours) and we can make our own API to return these tokens to the web app, which will allow users to connect directly to the ACS instances with a token we issue them.
 
 To do this, much like with our Ably API key previously, we're going to use an Azure Function to our `/api` subdirectory.
 
-There's a directory `api/createAzureTokenRequest` - this will contain the code that calls the `issueToken` API.
+The code that calls the `issueToken` API is inside the `api/createAzureTokenRequest` directory. It contains two files - `index.js` and `function.json`. The function.json file is the Functions binding code that the Azure portal uses for configuration, it's generated by the SDK and you don't need to pay attention to it.
 
-Inside it, there are two files - `index.js` and `function.json`. The function.json file is the Functions binding code that the Azure portal uses for configuration, it's generated by the SDK and you don't need to pay attention to it.
-
-Our Azure code is inside the `index.js` file.
+The Azure code is in the `index.js` file:
 
 ```js
 const fetch = require('node-fetch');
@@ -226,11 +190,11 @@ module.exports = async function (context, req) {
 };
 ```
 
-By default, configures this API to be available on `https://azure-url/api/createAzureTokenRequest`.
-Our client side code will call this URL to authenticate with ACS.
+By default, this configures an API to be available on `https://azure-url/api/createAzureTokenRequest`.
+The client side code will call this URL to authenticate with ACS.
 
-You'll notice that we're using two values from `process.env` - this is your Azure key and service reason.
-TO make this code work, you're going to have to edit your `/api/local.settings.json` to look something like this:
+Notice that it uses two values from `process.env` - this is your Azure key and service region.
+To make this code work, you're going to have to edit the `/api/local.settings.json` to look something like this:
 
 ```json
 {
@@ -247,12 +211,12 @@ TO make this code work, you're going to have to edit your `/api/local.settings.j
 
 # The application
 
-The entire application contains a couple of HTML files
+The app itself
 
 - `index.html` - the transcription UI
 - `view.html` - a sharable UI to see transcription text
-- `index.ts` - our entry point
-- `style.css` - our styles
+- `index.ts` - the entry point
+- `style.css` - styles
 
 There's also a `/js` folder that contains:
 
