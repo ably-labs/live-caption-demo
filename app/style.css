@@ -32,14 +32,14 @@ h1 {
 }
 
 main {
-  max-width: 800px;
+  max-width: 960px;
 }
 
 section {
   margin: 1em;
 }
 
-button {
+.button {
   display: block;
   width: 100%;
   max-height: min-content;
@@ -57,14 +57,13 @@ button {
   grid-area: button;
 }
 
-button:hover {
+.button:hover {
   background-color: #27ae60;
 }
 
 h2 {
   margin:0; 
   padding: 1em;
-  text-align: center;
   color: white;
   background-color: #0075ff;
   font-size: 1.2em;
@@ -74,8 +73,10 @@ h2 {
   padding: 1em;
   border-radius: 2px;
   background-color: white;
-  min-height: 100px;
   line-height: 1.4em;
+  font-size: 1.4em;
+  overflow-y: scroll;
+  scroll-snap-align: end;
 }
 
 .light-grid {
@@ -165,6 +166,41 @@ footer {
   color: #333;
 }
 
+.viewer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  margin: 0;
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+.viewer-response {
+  height: calc(100vh - 30px);
+  font-size: 2em;
+}
+
+.response-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.share {
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 30px;
+  background-color: #1abc9c;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.share:hover {
+  background-color: #27ae60;
+}
+
 @media (min-width: 800px) {
     main {
       display: grid;
@@ -183,9 +219,6 @@ footer {
       grid-column: span 2;
       width: 100%;
     }
-    .response {
-      min-height: 160px;
-    }
     .info-holder {
       grid-column: span 3;
       width: 100%;
@@ -200,15 +233,26 @@ footer {
       height: 25px;
     }
     .controls {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr 1fr ;
+      grid-template-areas: 
+      "button button"
+      "colorlabel color"
+      "speedlabel speed";
+      height: auto;
       align-items: center;
+    }
+    label {
+      text-align: left;
+      margin: 1em;
     }
     .color {
       margin: 0;
     }
     .speed {
-      margin: 2em 0 1em;
+      margin: 1em 0;
+    }
+    .response-small {
+      height: 180px;
     }
 }

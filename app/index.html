@@ -22,8 +22,12 @@
                 <input type="range" max="-5" min="-250" value="-25" class="speed" id="speed"> 
             </section>
             <section class="response-holder">
-                <h2>Your speech as text will show here</h2>
-                <div id="response" class="response"></div>
+                <h2 class="response-header">
+                    <span>Your speech as text will show here</span>
+                    <button id="share" class="share">Share captions</button>
+                </h2>
+                
+                <div id="response" class="response response-small"></div>
             </section>
             <div id="lightGrid" class="light-grid"></div>
             <section class="info-holder">

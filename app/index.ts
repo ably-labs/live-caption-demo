@@ -11,6 +11,7 @@ import {
 
 import Ably from "ably";
 import { AzureCognitiveSpeech } from "./js/AzureCognitiveSpeech";
+import { enableSharing } from "./js/Sharing";
 
 const colorPicker = document.getElementById("color") as HTMLInputElement;
 const speedSlider = document.getElementById("speed") as HTMLInputElement;
@@ -41,8 +42,11 @@ speech.onTextRecognised((text) => {
   const speedValue = parseInt(speedSlider.value) * -1 ?? 25;
 
   textPreview.innerHTML += " " + text;
+  textPreview.scrollTop = textPreview.scrollHeight;
+
   ledDriver.text.scroll(text, colorValue, speedValue);
 });
 
 
 submitButton.addEventListener("click", () => speech.streamSpeechFromBrowser());
+enableSharing();

@@ -14,19 +14,13 @@
     <script src="/view.js" type="module"></script>
 </head>
 
-<body>
-    <h1 class="header">Live Caption Yourself</h1>
-    <main>
-        <section class="response-holder">
-            <h2>Text Preview</h2>
-            <div id="response" class="response"></div>
-        </section>
-        <footer>
-            Powered by <a href="https://ably.com">Ably</a> and <a
-                href="https://azure.microsoft.com/en-gb/services/cognitive-services/speech-to-text/">Microsoft Azure
-                Cognitive Services</a>
-        </footer>
-    </main>
+<body class="viewer">
+    <section id="response" class="response viewer-response"></section>
+    <footer class="viewer-footer">
+        <p class="viewer-footer-text">Live Captioning - Powered by <a href="https://ably.com">Ably</a> and <a
+            href="https://azure.microsoft.com/en-gb/services/cognitive-services/speech-to-text/">Microsoft Azure
+            Cognitive Services</a></p>
+    </footer>
 </body>
 
 </html>

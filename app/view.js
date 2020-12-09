@@ -16,4 +16,5 @@ channel.subscribe("StreamedText", message => {
     }
 
     placeholder.innerHTML += " " + text;
+    placeholder.scrollTop = placeholder.scrollHeight;
 });
