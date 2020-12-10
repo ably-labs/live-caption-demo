@@ -228,10 +228,6 @@ footer {
       margin: 0 auto;
       grid-column: span 3;
     }
-    .cell {
-      width: 25px;
-      height: 25px;
-    }
     .controls {
       display: grid;
       grid-template-columns: 1fr 1fr ;
