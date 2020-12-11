@@ -1,6 +1,6 @@
 # Live Captioning with Ably Realtime and Microsoft Azure Cognitive Services
 
-[![Ably + Azure Cognitive Services Live Captioning Demo with LED display](https://i.ibb.co/M5gyM4h/video.png)](https://www.youtube.com/watch?v=cxHJnJ8vJ4U)
+[![Ably + Azure Cognitive Services Live Captioning Demo with LED display](https://youtu.be/9loZY1q08tc)](https://www.youtube.com/watch?v=cxHJnJ8vJ4U)
 
 A live captioning app that translates your speech to a wearable display. Perfect for wearing masks.
 
