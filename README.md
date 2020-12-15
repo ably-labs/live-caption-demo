@@ -4,7 +4,7 @@
 
 A live captioning app that translates your speech to a wearable display. Perfect for wearing masks.
 
-URL: https://icy-pond-03bcaa503.azurestaticapps.net/
+URL: https://live-caption.ably.dev/
 
 # What is this?
 
