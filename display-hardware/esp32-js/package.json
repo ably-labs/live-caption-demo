@@ -14,7 +14,7 @@
   "dependencies": {},
   "devDependencies": {
     "@types/espruino": "^1.94.3",
-    "espruino": "^0.1.32",
+    "espruino": "^0.1.52",
     "gulp": "^4.0.2",
     "gulp-typescript": "^6.0.0-alpha.1",
     "js-yaml": "^3.14.0",
